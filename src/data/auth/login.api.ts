@@ -1,5 +1,5 @@
+import { config } from "@/constants/environment";
 import { AppResponse } from "@/types/global";
-import { config } from "@/utils/constants";
 import axios from "axios";
 import { getCredentials, GetCredentialsResponseData } from "./credentials.api";
 

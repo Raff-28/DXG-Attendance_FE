@@ -1,5 +1,5 @@
+import { config } from "@/constants/environment";
 import { AppResponse, Role } from "@/types/global";
-import { config } from "@/utils/constants";
 import axios from "axios";
 
 export type GetCredentialsResponseData = {
