@@ -1,4 +1,5 @@
 import { config } from "@/constants/environment";
+import { sleep } from "@/lib/utils";
 import { AppResponse } from "@/types/global";
 import axios from "axios";
 import { getCredentials, GetCredentialsResponseData } from "./credentials.api";
@@ -32,9 +33,16 @@ const postLogin = async (
 export const postLoginAndGetCredentials = async (
   body: LoginRequestBody
 ): Promise<AppResponse<LoginResponseData & GetCredentialsResponseData>> => {
+  await sleep(500);
   try {
     const loginResponse = await postLogin(body);
+    if (!loginResponse.data) {
+      throw new Error(loginResponse.message);
+    }
     const credentialsResponse = await getCredentials(loginResponse.data!.token);
+    if (!credentialsResponse.data) {
+      throw new Error(credentialsResponse.message);
+    }
     return {
       data: {
         id: credentialsResponse.data!.id,
@@ -43,8 +51,8 @@ export const postLoginAndGetCredentials = async (
       },
     };
   } catch (e) {
-    if (axios.isAxiosError<AppResponse<void>>(e) && e.response) {
-      return { message: e.response.data.message! };
+    if (e instanceof Error) {
+      return { message: e.message };
     }
     return { message: "An error occurred" };
   }
