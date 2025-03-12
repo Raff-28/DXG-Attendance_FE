@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+*,
+*::before,
+*::after {
+    -webkit-box-sizing: inherit;
+    box-sizing: inherit;
+}
+
+html {
+    scroll-behavior: smooth;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+body,
+input,
+textarea,
+button {
+    font-family: "Poppins", serif;
+    font-style: normal;
+    font-weight: 500;
+}
