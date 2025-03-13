@@ -30,7 +30,6 @@ export const LoginForm = () => {
   const { mutateAsync, isPending } = useMutation({
     mutationFn: postLoginAndGetCredentials,
     onSuccess: (data) => {
-      console.log(data);
       if (data.data) {
         Cookies.set(accessTokenKey, data.data.token, { expires: 1 });
         if (data.data.role === "admin") {
@@ -48,7 +47,7 @@ export const LoginForm = () => {
       email: "",
       password: "",
     },
-    mode: "onBlur",
+    mode: "onTouched",
   });
 
   const onSubmit = (values: z.infer<typeof loginSchema>) => {

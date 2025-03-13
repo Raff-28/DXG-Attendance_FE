@@ -8,6 +8,7 @@ import {
 
 import { PageTitle } from "@/components/utility/PageTitle";
 import { ROUTES } from "@/constants/globals";
+import { EmployeeRegistrationRoute } from "@/features/admin/employee.registration/EmployeeRegistration.Route";
 import { SubmitAttendanceRoute } from "@/features/employee/submitAttendance/SubmitAttendance.Route";
 import { lazy } from "react";
 
@@ -30,7 +31,7 @@ const router = createBrowserRouter([
   },
   {
     element: <AdminLayout />,
-    children: [EmployeeListRoute],
+    children: [EmployeeListRoute, EmployeeRegistrationRoute],
   },
   {
     element: <EmployeeLayout />,
