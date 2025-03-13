@@ -41,7 +41,9 @@ export const EmployeeListPage = () => {
             <TableHead className="px-6 py-3">Department</TableHead>
             <TableHead className="px-6 py-3">Email</TableHead>
             <TableHead className="px-6 py-3">Phone Number</TableHead>
-            <TableHead className="px-6 py-3">Actions</TableHead>
+            <TableHead className="px-6 py-3 flex justify-center">
+              Actions
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -64,7 +66,7 @@ export const EmployeeListPage = () => {
                 <TableCell className="px-6 py-3">
                   {employee.phone_number}
                 </TableCell>
-                <TableCell className="px-6 py-3">
+                <TableCell className="px-6 py-3 flex justify-center">
                   <div className="flex gap-2">
                     <WithTooltip content="View details">
                       <div className="cursor-pointer text-blue-800 border-2 p-1 rounded-md border-blue-800 hover:bg-blue-800 hover:text-white transform hover:scale-110 transition-transform duration-200">
