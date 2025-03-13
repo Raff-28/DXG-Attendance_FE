@@ -9,6 +9,7 @@ export type GetEmployeesResponseData = {
   position: string;
   department: string;
   phone_number: string;
+  email: string;
 };
 
 export const getEmployees = async (

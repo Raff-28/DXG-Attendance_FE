@@ -39,6 +39,7 @@ export const EmployeeListPage = () => {
             <TableHead className="px-6 py-3">Employee Name</TableHead>
             <TableHead className="px-6 py-3">Position</TableHead>
             <TableHead className="px-6 py-3">Department</TableHead>
+            <TableHead className="px-6 py-3">Email</TableHead>
             <TableHead className="px-6 py-3">Phone Number</TableHead>
             <TableHead className="px-6 py-3">Actions</TableHead>
           </TableRow>
@@ -59,6 +60,7 @@ export const EmployeeListPage = () => {
                 <TableCell className="px-6 py-3">
                   {employee.department}
                 </TableCell>
+                <TableCell className="px-6 py-3">{employee.email}</TableCell>
                 <TableCell className="px-6 py-3">
                   {employee.phone_number}
                 </TableCell>
