@@ -1,5 +1,4 @@
 import { PageTitle } from "@/components/utility/PageTitle";
-import { RequireRole } from "@/components/utility/RequireRole";
 import { RouteObject } from "react-router-dom";
 
 export const EmployeeListRoute: RouteObject = {
@@ -8,10 +7,10 @@ export const EmployeeListRoute: RouteObject = {
     const { EmployeeListPage } = await import("./EmployeeList.Page");
     return {
       Component: () => (
-        <RequireRole role={["admin"]}>
+        <>
           <PageTitle title="List of Employees" />
           <EmployeeListPage />
-        </RequireRole>
+        </>
       ),
     };
   },

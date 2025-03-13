@@ -14,19 +14,31 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { accessTokenKey } from "@/constants/globals";
 import { postLoginAndGetCredentials } from "@/data/auth/login.api";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
+import Cookies from "js-cookie";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import z from "zod";
 import { loginSchema } from "./login.schema";
 
 export const LoginForm = () => {
+  const navigate = useNavigate();
   const { mutateAsync, isPending } = useMutation({
     mutationFn: postLoginAndGetCredentials,
     onSuccess: (data) => {
       console.log(data);
+      if (data.data) {
+        Cookies.set(accessTokenKey, data.data.token, { expires: 1 });
+        if (data.data.role === "admin") {
+          navigate("/admin/employee-list", { replace: true });
+        } else {
+          navigate("/employee/submit-attendance", { replace: true });
+        }
+      }
     },
   });
 
@@ -44,7 +56,7 @@ export const LoginForm = () => {
   };
   return (
     <div className={cn("flex flex-col gap-6")}>
-      <Card className="text-black bg-white border border-black">
+      <Card className="text-black bg-white border border-gray-300">
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
           <CardDescription>

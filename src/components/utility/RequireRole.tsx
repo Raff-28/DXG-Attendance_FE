@@ -1,19 +1,42 @@
+import { accessTokenKey } from "@/constants/globals";
+import { getCredentials } from "@/data/auth/credentials.api";
 import { Role } from "@/types/global";
-import { ReactNode, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import Cookies from "js-cookie";
+import { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 
 interface RequireRoleProps {
   role: Role[];
-  redirectRoute?: string;
   children: ReactNode;
 }
 
 export const RequireRole = (props: RequireRoleProps) => {
-  const userRole: Role = useMemo(() => "guest", []); // TODO: change with actual logic to get user role later
+  const { data, isFetching } = useQuery({
+    queryKey: ["userCredentials"],
+    queryFn: async () => {
+      const token = Cookies.get(accessTokenKey);
+      if (!token) {
+        return Promise.resolve({
+          data: { id: 0, role: "guest" as Role },
+        });
+      }
+      return getCredentials(token);
+    },
+  });
 
-  if (!props.role.includes(userRole)) {
-    if (props.redirectRoute !== undefined) {
-      return <Navigate to={props.redirectRoute} replace />;
+  if (isFetching || !data?.data) {
+    return <div>Loading...</div>;
+  } else {
+    console.log(data.data); // TODO: Remove this line later
+  }
+
+  if (!props.role.includes(data.data.role)) {
+    if (data.data.role == "employee") {
+      return <Navigate to="/employee/submit-attendance" replace />;
+    }
+    if (data.data.role == "admin") {
+      return <Navigate to="/admin/employee-list" replace />;
     }
     return <Navigate to="/login" replace />;
   }
