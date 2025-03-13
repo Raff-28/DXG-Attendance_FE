@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 
 import { PageTitle } from "@/components/utility/PageTitle";
+import { ROUTES } from "@/constants/globals";
 import { SubmitAttendanceRoute } from "@/features/employee/submitAttendance/SubmitAttendance.Route";
 import { lazy } from "react";
 
@@ -17,7 +18,7 @@ const EmployeeLayout = lazy(
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: ROUTES.HOME,
     element: (
       <>
         <PageTitle title="Home" />
@@ -37,8 +38,8 @@ const router = createBrowserRouter([
   },
   LoginRoute,
   {
-    path: "*",
-    element: <Navigate to="/" replace />,
+    path: ROUTES.NOT_FOUND,
+    element: <Navigate to={ROUTES.HOME} replace />,
   },
 ]);
 

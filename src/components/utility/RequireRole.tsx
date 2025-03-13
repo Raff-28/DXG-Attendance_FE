@@ -1,4 +1,4 @@
-import { accessTokenKey } from "@/constants/globals";
+import { accessTokenKey, ROUTES } from "@/constants/globals";
 import { getCredentials } from "@/data/auth/credentials.api";
 import { Role } from "@/types/global";
 import { useQuery } from "@tanstack/react-query";
@@ -33,12 +33,12 @@ export const RequireRole = (props: RequireRoleProps) => {
 
   if (!props.role.includes(data.data.role)) {
     if (data.data.role == "employee") {
-      return <Navigate to="/employee/submit-attendance" replace />;
+      return <Navigate to={ROUTES.SUBMIT_ATTENDANCE} replace />;
     }
     if (data.data.role == "admin") {
-      return <Navigate to="/admin/employee-list" replace />;
+      return <Navigate to={ROUTES.EMPLOYEE_LIST} replace />;
     }
-    return <Navigate to="/login" replace />;
+    return <Navigate to={ROUTES.LOGIN} replace />;
   }
 
   return props.children;

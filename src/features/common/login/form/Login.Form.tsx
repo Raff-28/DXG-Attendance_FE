@@ -14,7 +14,7 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { accessTokenKey } from "@/constants/globals";
+import { accessTokenKey, ROUTES } from "@/constants/globals";
 import { postLoginAndGetCredentials } from "@/data/auth/login.api";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,9 +34,9 @@ export const LoginForm = () => {
       if (data.data) {
         Cookies.set(accessTokenKey, data.data.token, { expires: 1 });
         if (data.data.role === "admin") {
-          navigate("/admin/employee-list", { replace: true });
+          navigate(ROUTES.EMPLOYEE_LIST, { replace: true });
         } else {
-          navigate("/employee/submit-attendance", { replace: true });
+          navigate(ROUTES.SUBMIT_ATTENDANCE, { replace: true });
         }
       }
     },
