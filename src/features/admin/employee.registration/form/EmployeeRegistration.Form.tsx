@@ -7,10 +7,16 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { ROUTES } from "@/constants/globals";
-import { postRegister } from "@/data/auth/register.api";
+import { ACCESS_TOKEN_KEY, ROUTES } from "@/constants/globals";
+import {
+  postRegister,
+  RegisterRequestBody,
+  RegisterResponseData,
+} from "@/data/auth/register.api";
+import { AppResponse } from "@/types/global";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
+import Cookies from "js-cookie";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import z from "zod";
@@ -19,7 +25,15 @@ import { employeeRegistrationSchema } from "./employeeRegistration.schema";
 export const EmployeeRegistrationForm = () => {
   const navigate = useNavigate();
   const { mutateAsync, isPending, data } = useMutation({
-    mutationFn: postRegister,
+    mutationFn: (body: RegisterRequestBody) => {
+      const token = Cookies.get(ACCESS_TOKEN_KEY);
+      if (!token) {
+        return Promise.resolve<AppResponse<RegisterResponseData>>({
+          message: "Unauthorized",
+        });
+      }
+      return postRegister(body, token);
+    },
     onSuccess: (data) => {
       if (data.data) {
         navigate(ROUTES.EMPLOYEE_LIST);
@@ -49,7 +63,12 @@ export const EmployeeRegistrationForm = () => {
       department: values.department,
       phone_number: values.phoneNumber,
     };
-    mutateAsync(formattedValues);
+    const token = Cookies.get(ACCESS_TOKEN_KEY);
+    if (!token) {
+      navigate(ROUTES.LOGIN);
+    } else {
+      mutateAsync(formattedValues);
+    }
   };
   return (
     <Form {...form}>

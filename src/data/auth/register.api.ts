@@ -3,7 +3,7 @@ import { sleep } from "@/lib/utils";
 import { AppResponse } from "@/types/global";
 import axios from "axios";
 
-type RegisterRequestBody = {
+export type RegisterRequestBody = {
   email: string;
   password: string;
   name: string;
@@ -12,18 +12,24 @@ type RegisterRequestBody = {
   phone_number: string;
 };
 
-type RegisterResponseData = RegisterRequestBody & {
+export type RegisterResponseData = RegisterRequestBody & {
   id: string;
 };
 
 export const postRegister = async (
-  body: RegisterRequestBody
+  body: RegisterRequestBody,
+  token: string
 ): Promise<AppResponse<RegisterResponseData>> => {
   await sleep(500);
   try {
     const response = await axios.post<AppResponse<RegisterResponseData>>(
       `${config.AUTH_BASE_URL}/register`,
-      body
+      body,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
     return response.data;
   } catch (e) {
