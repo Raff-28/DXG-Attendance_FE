@@ -15,7 +15,7 @@ import {
 import { AppResponse } from "@/types/global";
 import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
-import { CalendarDays, Trash2, UserRoundPen } from "lucide-react";
+import { Info, Trash2, UserRoundPen } from "lucide-react";
 
 export const EmployeeListPage = () => {
   const { data, isFetching } = useQuery({
@@ -31,8 +31,8 @@ export const EmployeeListPage = () => {
     },
   });
   return (
-    <div>
-      <h1>Employee List</h1>
+    <main className="flex flex-col gap-4 p-5">
+      <h1 className="text-2xl">List of Employees</h1>
       <Table>
         <TableHeader className="bg-gray-100">
           <TableRow>
@@ -51,7 +51,7 @@ export const EmployeeListPage = () => {
           )}
           {!isFetching &&
             data?.data?.map((employee) => (
-              <TableRow>
+              <TableRow key={employee.id}>
                 <TableCell className="px-6 py-3">
                   {employee.full_name}
                 </TableCell>
@@ -64,20 +64,20 @@ export const EmployeeListPage = () => {
                 </TableCell>
                 <TableCell className="px-6 py-3">
                   <div className="flex gap-2">
-                    <WithTooltip content="View attendance">
-                      <button className="cursor-pointer text-blue-800 border-2 p-1 rounded-md border-blue-800 hover:bg-blue-800 hover:text-white transform hover:scale-110 transition-transform duration-200">
-                        <CalendarDays size={20} />
-                      </button>
+                    <WithTooltip content="View details">
+                      <div className="cursor-pointer text-blue-800 border-2 p-1 rounded-md border-blue-800 hover:bg-blue-800 hover:text-white transform hover:scale-110 transition-transform duration-200">
+                        <Info size={20} />
+                      </div>
                     </WithTooltip>
                     <WithTooltip content="Edit employee">
-                      <button className="cursor-pointer text-yellow-600 border-2 p-1 rounded-md border-yellow-600 hover:bg-yellow-600 hover:text-white transform hover:scale-110 transition-transform duration-200">
+                      <div className="cursor-pointer text-yellow-600 border-2 p-1 rounded-md border-yellow-600 hover:bg-yellow-600 hover:text-white transform hover:scale-110 transition-transform duration-200">
                         <UserRoundPen size={20} />
-                      </button>
+                      </div>
                     </WithTooltip>
                     <WithTooltip content="Delete employee">
-                      <button className="cursor-pointer text-red-800 border-2 p-1 rounded-md border-red-800 hover:bg-red-800 hover:text-white transform hover:scale-110 transition-transform duration-200">
+                      <div className="cursor-pointer text-red-800 border-2 p-1 rounded-md border-red-800 hover:bg-red-800 hover:text-white transform hover:scale-110 transition-transform duration-200">
                         <Trash2 size={20} />
-                      </button>
+                      </div>
                     </WithTooltip>
                   </div>
                 </TableCell>
@@ -85,6 +85,6 @@ export const EmployeeListPage = () => {
             ))}
         </TableBody>
       </Table>
-    </div>
+    </main>
   );
 };
