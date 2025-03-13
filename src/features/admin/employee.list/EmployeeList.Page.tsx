@@ -11,14 +11,15 @@ import { WithTooltip } from "@/components/utility/WithTooltip";
 import { ACCESS_TOKEN_KEY } from "@/constants/globals";
 import {
   deleteEmployee,
+  GetEmployeeResponseData,
   getEmployees,
-  GetEmployeesResponseData,
 } from "@/data/employee/employee.api";
 import { AppResponse } from "@/types/global";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { Info, Trash2, UserRoundPen } from "lucide-react";
 import { useState } from "react";
+import { EditEmployeeDialog } from "./components/EditEmployee.Dialog";
 
 export const EmployeeListPage = () => {
   const { data, isFetching } = useQuery({
@@ -26,7 +27,7 @@ export const EmployeeListPage = () => {
     queryFn: async () => {
       const token = Cookies.get(ACCESS_TOKEN_KEY);
       if (!token) {
-        return Promise.resolve<AppResponse<GetEmployeesResponseData[]>>({
+        return Promise.resolve<AppResponse<GetEmployeeResponseData[]>>({
           data: [],
         });
       }
@@ -77,11 +78,7 @@ export const EmployeeListPage = () => {
                         <Info size={20} />
                       </div>
                     </WithTooltip>
-                    <WithTooltip content="Edit employee">
-                      <div className="cursor-pointer text-yellow-600 border-2 p-1 rounded-md border-yellow-600 hover:bg-yellow-600 hover:text-white transform hover:scale-110 transition-transform duration-200">
-                        <UserRoundPen size={20} />
-                      </div>
-                    </WithTooltip>
+                    <EditEmployeeButton prevData={employee} />
                     <DeleteEmployeeButton id={employee.id} />
                   </div>
                 </TableCell>
@@ -137,3 +134,35 @@ const DeleteEmployeeButton = ({ id }: { id: number }) => {
     </>
   );
 };
+
+function EditEmployeeButton({
+  prevData,
+}: {
+  prevData: GetEmployeeResponseData;
+}) {
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  return (
+    <>
+      {isEditModalOpen && (
+        <EditEmployeeDialog
+          open={isEditModalOpen}
+          onOpenChange={setIsEditModalOpen}
+          prevData={prevData}
+          onSuccessEdit={() => {
+            setIsEditModalOpen(false);
+          }}
+        />
+      )}
+      <WithTooltip content="Edit employee">
+        <div
+          onClick={() => {
+            setIsEditModalOpen(true);
+          }}
+          className="cursor-pointer text-yellow-600 border-2 p-1 rounded-md border-yellow-600 hover:bg-yellow-600 hover:text-white transform hover:scale-110 transition-transform duration-200"
+        >
+          <UserRoundPen size={20} />
+        </div>
+      </WithTooltip>
+    </>
+  );
+}
