@@ -2,7 +2,7 @@ import Cookies from "js-cookie";
 import { ArrowLeftFromLine, LogOut } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { LogOutDialog } from "../dialog/LogOutDialog";
+import { LogOutDialog } from "../dialog/Logout.Dialog";
 
 export type SidebarMenu = {
   title: string;

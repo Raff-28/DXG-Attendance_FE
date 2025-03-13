@@ -34,11 +34,12 @@ export const getEmployees = async (
 };
 
 export const deleteEmployee = async (
+  id: number,
   token: string
 ): Promise<AppResponse<void>> => {
   try {
     const response = await axios.delete<AppResponse<void>>(
-      `${config.EMPLOYEE_BASE_URL}/employees`,
+      `${config.EMPLOYEE_BASE_URL}/employees/${id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

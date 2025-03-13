@@ -1,3 +1,4 @@
+import { DeleteEmployeeDialog } from "@/components/dialog/DeleteEmployee.Dialog";
 import {
   Table,
   TableBody,
@@ -9,13 +10,15 @@ import {
 import { WithTooltip } from "@/components/utility/WithTooltip";
 import { ACCESS_TOKEN_KEY } from "@/constants/globals";
 import {
+  deleteEmployee,
   getEmployees,
   GetEmployeesResponseData,
 } from "@/data/employee/employee.api";
 import { AppResponse } from "@/types/global";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { Info, Trash2, UserRoundPen } from "lucide-react";
+import { useState } from "react";
 
 export const EmployeeListPage = () => {
   const { data, isFetching } = useQuery({
@@ -30,6 +33,7 @@ export const EmployeeListPage = () => {
       return getEmployees(token);
     },
   });
+
   return (
     <main className="flex flex-col gap-4 p-5">
       <h1 className="text-2xl">List of Employees</h1>
@@ -78,11 +82,7 @@ export const EmployeeListPage = () => {
                         <UserRoundPen size={20} />
                       </div>
                     </WithTooltip>
-                    <WithTooltip content="Delete employee">
-                      <div className="cursor-pointer text-red-800 border-2 p-1 rounded-md border-red-800 hover:bg-red-800 hover:text-white transform hover:scale-110 transition-transform duration-200">
-                        <Trash2 size={20} />
-                      </div>
-                    </WithTooltip>
+                    <DeleteEmployeeButton id={employee.id} />
                   </div>
                 </TableCell>
               </TableRow>
@@ -90,5 +90,50 @@ export const EmployeeListPage = () => {
         </TableBody>
       </Table>
     </main>
+  );
+};
+
+const DeleteEmployeeButton = ({ id }: { id: number }) => {
+  const queryClient = useQueryClient();
+  const { mutateAsync: mutateDeleteEmployee } = useMutation({
+    mutationFn: (id: number) => {
+      const token = Cookies.get(ACCESS_TOKEN_KEY);
+      if (!token) {
+        return Promise.resolve<AppResponse<void>>({
+          message: "Unauthorized",
+        });
+      }
+      return deleteEmployee(id, token);
+    },
+    onSuccess: (data) => {
+      if (!data.message) {
+        setIsDeleteModalOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["employeeList"] });
+      }
+    },
+  });
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  return (
+    <>
+      {isDeleteModalOpen && (
+        <DeleteEmployeeDialog
+          open={isDeleteModalOpen}
+          onOpenChange={setIsDeleteModalOpen}
+          onConfirmDelete={() => {
+            mutateDeleteEmployee(id);
+          }}
+        />
+      )}
+      <WithTooltip content="Delete employee">
+        <div
+          onClick={() => {
+            setIsDeleteModalOpen(true);
+          }}
+          className="cursor-pointer text-red-800 border-2 p-1 rounded-md border-red-800 hover:bg-red-800 hover:text-white transform hover:scale-110 transition-transform duration-200"
+        >
+          <Trash2 size={20} />
+        </div>
+      </WithTooltip>
+    </>
   );
 };

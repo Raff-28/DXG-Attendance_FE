@@ -24,10 +24,7 @@ export const LogOutDialog = (props: LogOutDialogProps) => {
 
   return (
     <Dialog open={props.open} onOpenChange={handleModalChange}>
-      <DialogContent
-        className="sm:max-w-[425px] [&>button]:hidden"
-        color="text-navy"
-      >
+      <DialogContent className="sm:max-w-[425px] [&>button]:hidden">
         <DialogHeader>
           <div className="flex place-content-center">
             <CircleAlert className="text-amber-400 size-28" />
@@ -40,10 +37,10 @@ export const LogOutDialog = (props: LogOutDialogProps) => {
               Close
             </X>
           </DialogClose>
-          <DialogTitle className="flex justify-center text-navy font-semibold pt-6">
+          <DialogTitle className="flex justify-center font-semibold pt-6 text-2xl">
             Logout
           </DialogTitle>
-          <DialogDescription className="flex justify-center text-navy text-xl">
+          <DialogDescription className="flex justify-center text-xl text-black text-center">
             Are you sure want to logout?
           </DialogDescription>
         </DialogHeader>
