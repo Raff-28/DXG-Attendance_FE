@@ -1,11 +1,13 @@
+import { Sidebar } from "@/components/sidebar/Sidebar";
 import { RequireRole } from "@/components/utility/RequireRole";
 import { Outlet } from "react-router-dom";
 
 const AdminLayout = () => {
   return (
     <RequireRole role={["admin"]}>
-      <h1>Admin Layout</h1>
-      <Outlet />
+      <Sidebar>
+        <Outlet />
+      </Sidebar>
     </RequireRole>
   );
 };

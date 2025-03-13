@@ -225,7 +225,7 @@ const renderEmployeeDataForm = (
           render={({ field }) => (
             <FormItem>
               <div className="grid gap-2">
-                <FormLabel>Position in Company</FormLabel>
+                <FormLabel>Position</FormLabel>
                 <FormControl>
                   <Input
                     id="position"
