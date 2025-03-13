@@ -63,12 +63,7 @@ export const EmployeeRegistrationForm = () => {
       department: values.department,
       phone_number: values.phoneNumber,
     };
-    const token = Cookies.get(ACCESS_TOKEN_KEY);
-    if (!token) {
-      navigate(ROUTES.LOGIN);
-    } else {
-      mutateAsync(formattedValues);
-    }
+    mutateAsync(formattedValues);
   };
   return (
     <Form {...form}>
