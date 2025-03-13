@@ -27,7 +27,7 @@ import { loginSchema } from "./login.schema";
 
 export const LoginForm = () => {
   const navigate = useNavigate();
-  const { mutateAsync, isPending } = useMutation({
+  const { mutateAsync, isPending, data } = useMutation({
     mutationFn: postLoginAndGetCredentials,
     onSuccess: (data) => {
       if (data.data) {
@@ -138,6 +138,9 @@ export const LoginForm = () => {
                 >
                   Login
                 </AppButton>
+                {data?.message && (
+                  <p className="text-red-500 self-center">{data.message}</p>
+                )}
               </div>
             </form>
           </Form>
