@@ -7,7 +7,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { WithTooltip } from "@/components/utility/WithTooltip";
-import { accessTokenKey } from "@/constants/globals";
+import { ACCESS_TOKEN_KEY } from "@/constants/globals";
 import {
   getEmployees,
   GetEmployeesResponseData,
@@ -21,7 +21,7 @@ export const EmployeeListPage = () => {
   const { data, isFetching } = useQuery({
     queryKey: ["employeeList"],
     queryFn: async () => {
-      const token = Cookies.get(accessTokenKey);
+      const token = Cookies.get(ACCESS_TOKEN_KEY);
       if (!token) {
         return Promise.resolve<AppResponse<GetEmployeesResponseData[]>>({
           data: [],

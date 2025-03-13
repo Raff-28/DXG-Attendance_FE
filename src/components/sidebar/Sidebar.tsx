@@ -1,18 +1,27 @@
-import { ArrowLeftFromLine } from "lucide-react";
+import { ACCESS_TOKEN_KEY } from "@/constants/globals";
+import Cookies from "js-cookie";
+import { ArrowLeftFromLine, LogOut } from "lucide-react";
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
+export type SidebarMenu = {
+  title: string;
+  icon: React.ReactNode;
+  link: string;
+};
 interface SidebarProps {
   children: React.ReactNode;
+  menus: SidebarMenu[];
 }
 
-export const Sidebar = ({ children }: SidebarProps) => {
+export const Sidebar = ({ children, menus }: SidebarProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <>
-      {/* Toggle Button */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => setIsOpen((prev) => !prev)}
         type="button"
         className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg hover:bg-gray-100 
         focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
@@ -34,35 +43,51 @@ export const Sidebar = ({ children }: SidebarProps) => {
       </button>
 
       <aside
-        className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform bg-gray-50 dark:bg-gray-800 
+        className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform bg-gray-100 dark:bg-gray-800 
         ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
         aria-label="Sidebar"
       >
-        <div className="h-full px-3 py-4 overflow-y-auto">
+        <div className="h-full px-3 py-4 overflow-y-auto flex flex-col justify-between">
+          <h2 className="text-xl ms-1">DXG Attendance</h2>
           <ul className="space-y-2 font-medium">
+            {menus.map((menu) => (
+              <li key={menu.title}>
+                <Link
+                  to={menu.link}
+                  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 group"
+                >
+                  {menu.icon}
+                  <span className="ms-3">{menu.title}</span>
+                </Link>
+              </li>
+            ))}
             <li>
               <button
                 onClick={() => {
-                  setIsOpen(false);
+                  Cookies.remove(ACCESS_TOKEN_KEY);
+                  navigate("/login", { replace: true });
                 }}
-                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="flex items-center p-2 w-full text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 group"
               >
-                <ArrowLeftFromLine className="size-6" />
+                <LogOut />
+                <span className="ms-3">Logout</span>
               </button>
             </li>
-            <li>
-              <a
-                href="#"
-                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-              >
-                <span className="ms-3">Dashboard</span>
-              </a>
-            </li>
           </ul>
+          <div>
+            <button
+              onClick={() => {
+                setIsOpen((prev) => !prev);
+              }}
+              className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 group"
+            >
+              <ArrowLeftFromLine className="size-6" />
+            </button>
+          </div>
         </div>
       </aside>
 
-      <div className={`p-4 transition-all ${isOpen ? "ml-64" : "ml-0"}`}>
+      <div className={`px-4 transition-all ${isOpen ? "ml-64" : "ml-0"}`}>
         {children}
       </div>
     </>

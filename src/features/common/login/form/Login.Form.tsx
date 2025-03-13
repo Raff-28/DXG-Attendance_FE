@@ -14,7 +14,7 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { accessTokenKey, ROUTES } from "@/constants/globals";
+import { ACCESS_TOKEN_KEY, ROUTES } from "@/constants/globals";
 import { postLoginAndGetCredentials } from "@/data/auth/login.api";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -31,7 +31,7 @@ export const LoginForm = () => {
     mutationFn: postLoginAndGetCredentials,
     onSuccess: (data) => {
       if (data.data) {
-        Cookies.set(accessTokenKey, data.data.token, { expires: 1 });
+        Cookies.set(ACCESS_TOKEN_KEY, data.data.token, { expires: 1 });
         if (data.data.role === "admin") {
           navigate(ROUTES.EMPLOYEE_LIST, { replace: true });
         } else {

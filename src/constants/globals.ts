@@ -1,4 +1,4 @@
-export const accessTokenKey = "access_token";
+export const ACCESS_TOKEN_KEY = "access_token";
 export const ROUTES = {
   HOME: "/",
   LOGIN: "/login",

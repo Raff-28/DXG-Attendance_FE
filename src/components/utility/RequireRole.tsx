@@ -1,4 +1,4 @@
-import { accessTokenKey, ROUTES } from "@/constants/globals";
+import { ACCESS_TOKEN_KEY, ROUTES } from "@/constants/globals";
 import { getCredentials } from "@/data/auth/credentials.api";
 import { Role } from "@/types/global";
 import { useQuery } from "@tanstack/react-query";
@@ -15,7 +15,7 @@ export const RequireRole = (props: RequireRoleProps) => {
   const { data, isFetching } = useQuery({
     queryKey: ["userCredentials"],
     queryFn: async () => {
-      const token = Cookies.get(accessTokenKey);
+      const token = Cookies.get(ACCESS_TOKEN_KEY);
       if (!token) {
         return Promise.resolve({
           data: { id: 0, role: "guest" as Role },
