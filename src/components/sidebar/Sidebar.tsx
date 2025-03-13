@@ -1,8 +1,8 @@
-import { ACCESS_TOKEN_KEY } from "@/constants/globals";
 import Cookies from "js-cookie";
 import { ArrowLeftFromLine, LogOut } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { LogOutDialog } from "../dialog/LogOutDialog";
 
 export type SidebarMenu = {
   title: string;
@@ -16,10 +16,21 @@ interface SidebarProps {
 
 export const Sidebar = ({ children, menus }: SidebarProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
   return (
     <>
+      {isModalOpen && (
+        <LogOutDialog
+          open={isModalOpen}
+          onOpenChange={setIsModalOpen}
+          onConfirmLogout={() => {
+            Cookies.remove("access_token");
+            navigate("/login", { replace: true });
+          }}
+        />
+      )}
       <button
         onClick={() => setIsOpen((prev) => !prev)}
         type="button"
@@ -64,10 +75,9 @@ export const Sidebar = ({ children, menus }: SidebarProps) => {
             <li>
               <button
                 onClick={() => {
-                  Cookies.remove(ACCESS_TOKEN_KEY);
-                  navigate("/login", { replace: true });
+                  setIsModalOpen(true);
                 }}
-                className="flex items-center p-2 w-full text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 group"
+                className="flex items-center cursor-pointer p-2 w-full text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 group"
               >
                 <LogOut />
                 <span className="ms-3">Logout</span>
@@ -79,7 +89,7 @@ export const Sidebar = ({ children, menus }: SidebarProps) => {
               onClick={() => {
                 setIsOpen((prev) => !prev);
               }}
-              className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 group"
+              className="flex items-center cursor-pointer p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 group"
             >
               <ArrowLeftFromLine className="size-6" />
             </button>
