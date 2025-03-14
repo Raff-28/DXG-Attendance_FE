@@ -105,7 +105,7 @@ export const EmployeeListPage = () => {
 
 const DeleteEmployeeButton = ({ id }: { id: number }) => {
   const queryClient = useQueryClient();
-  const { mutateAsync: mutateDeleteEmployee } = useMutation({
+  const { mutateAsync: mutateDeleteEmployee, isPending } = useMutation({
     mutationFn: (id: number) => {
       const token = Cookies.get(ACCESS_TOKEN_KEY);
       if (!token) {
@@ -133,6 +133,7 @@ const DeleteEmployeeButton = ({ id }: { id: number }) => {
           onConfirmDelete={() => {
             mutateDeleteEmployee(id);
           }}
+          isDeleting={isPending}
         />
       )}
       <WithTooltip content="Delete employee">

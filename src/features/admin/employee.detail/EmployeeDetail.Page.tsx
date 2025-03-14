@@ -57,7 +57,7 @@ export const EmployeeDetailPage = () => {
     },
   });
 
-  const { data: attendanceData } = useQuery({
+  const { data: attendanceData, isFetching: isFetchingAttendance } = useQuery({
     queryKey: ["attendanceList", employeeData?.data?.user_id, page],
     queryFn: async () => {
       const token = Cookies.get(ACCESS_TOKEN_KEY);
@@ -90,12 +90,17 @@ export const EmployeeDetailPage = () => {
         <span>Back to Employee List</span>
       </Link>
       {renderEmployeeData(employeeData)}
-      {attendanceData?.data?.attendances &&
+      {!isFetchingAttendance &&
+      attendanceData?.data?.attendances &&
       attendanceData?.data?.attendances.length > 0 ? (
         renderAttendanceHistory(attendanceData, page, setPage)
       ) : (
         <div className="border rounded-lg shadow px-4 sm:px-6 py-5 mb-6">
-          <h2 className="text-lg mb-4">No attendance data found</h2>
+          <h2 className="text-lg mb-4">
+            {!isFetchingAttendance
+              ? "No attendance data found"
+              : "Getting attendance data..."}
+          </h2>
         </div>
       )}
     </main>
@@ -121,7 +126,7 @@ const renderEmployeeData = (
             <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt className="text-sm font-medium text-gray-500">Full name</dt>
               <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {employeeData?.data?.full_name}
+                {employeeData?.data?.full_name || "Loading..."}
               </dd>
             </div>
             <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -129,7 +134,7 @@ const renderEmployeeData = (
                 Email address
               </dt>
               <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {employeeData?.data?.email}
+                {employeeData?.data?.email || "Loading..."}
               </dd>
             </div>
             <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -137,19 +142,19 @@ const renderEmployeeData = (
                 Phone number
               </dt>
               <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {employeeData?.data?.phone_number}
+                {employeeData?.data?.phone_number || "Loading..."}
               </dd>
             </div>
             <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt className="text-sm font-medium text-gray-500">Position</dt>
               <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {employeeData?.data?.position}
+                {employeeData?.data?.position || "Loading..."}
               </dd>
             </div>
             <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt className="text-sm font-medium text-gray-500">Department</dt>
               <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {employeeData?.data?.department}
+                {employeeData?.data?.department || "Loading..."}
               </dd>
             </div>
           </dl>

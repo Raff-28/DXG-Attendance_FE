@@ -9,12 +9,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { CircleAlert, X } from "lucide-react";
-import { Button } from "../ui/button";
+import { AppButton } from "../appButton/AppButton";
 
 interface DeleteEmployeeDialogProps {
   open: boolean;
   onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
   onConfirmDelete: () => void;
+  isDeleting: boolean;
 }
 
 export const DeleteEmployeeDialog = (props: DeleteEmployeeDialogProps) => {
@@ -45,20 +46,22 @@ export const DeleteEmployeeDialog = (props: DeleteEmployeeDialogProps) => {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="w-full px-8 gap-4">
-          <Button
+          <AppButton
+            state={props.isDeleting ? "Disabled" : "Active"}
             type="submit"
             className="flex-1 cursor-pointer border border-gray-400 text-black bg-transparent  hover:bg-transparent  transform hover:scale-110 transition-transform duration-200"
             onClick={() => props.onOpenChange(false)}
           >
             Cancel
-          </Button>
-          <Button
+          </AppButton>
+          <AppButton
+            state={props.isDeleting ? "Loading" : "Active"}
             type="submit"
             className="flex-1 cursor-pointer text-white bg-red-800 hover:bg-red-800 transform hover:scale-110 transition-transform duration-200"
             onClick={props.onConfirmDelete}
           >
             Yes
-          </Button>
+          </AppButton>
         </DialogFooter>
       </DialogContent>
     </Dialog>
