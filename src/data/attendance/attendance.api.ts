@@ -50,3 +50,45 @@ export const getAttendances = async (
     return { message: "An error occurred" };
   }
 };
+
+export type PostAttendanceRequestBody = {
+  work_description: string;
+  reason_for_wfh: string;
+};
+
+export type PostAttendanceResponseData = {
+  id: number;
+  employee_id: number;
+  photo_url: string;
+  timestamp: string;
+  work_description: string;
+  reason_for_wfh: string;
+};
+
+export const postAttendance = async (
+  body: PostAttendanceRequestBody,
+  proofImage: File,
+  token: string
+): Promise<AppResponse<PostAttendanceResponseData>> => {
+  try {
+    const formData = new FormData();
+    formData.append("work_description", body.work_description);
+    formData.append("reason_for_wfh", body.reason_for_wfh);
+    formData.append("photo", proofImage);
+    const response = await axios.post<AppResponse<PostAttendanceResponseData>>(
+      `${config.ATTENDANCE_BASE_URL}/attendances`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (e) {
+    if (axios.isAxiosError<AppResponse<void>>(e) && e.response) {
+      return { message: e.response.data.message! };
+    }
+    return { message: "An error occurred" };
+  }
+};

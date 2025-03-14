@@ -55,7 +55,16 @@ export const EmployeeListPage = () => {
         <TableBody>
           {isFetching && (
             <tr>
-              <td colSpan={4}>Loading...</td>
+              <td colSpan={4} className="text-xl py-3 px-6">
+                Loading...
+              </td>
+            </tr>
+          )}
+          {!isFetching && data?.data?.length === 0 && (
+            <tr>
+              <td colSpan={4} className="text-xl py-3 px-6">
+                No employees found
+              </td>
             </tr>
           )}
           {!isFetching &&
