@@ -1,5 +1,12 @@
 import profilePlaceholder from "@/assets/profile-placeholder.png";
 import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import {
   Table,
   TableBody,
   TableCell,
@@ -68,44 +75,14 @@ export const EmployeeDetailPage = () => {
   return (
     <main className="mt-4 flex flex-col gap-5 px-5">
       {renderEmployeeData(employeeData)}
-      <div className="border rounded-lg shadow px-4 sm:px-6 py-5 mb-6">
-        <h2 className="text-lg mb-4">Employee's WFH Attendance History</h2>
-        <Table>
-          <TableHeader className="bg-gray-100">
-            <TableRow>
-              <TableHead className="px-6 py-3">Date</TableHead>
-              <TableHead className="px-6 py-3">Timestamp</TableHead>
-              <TableHead className="px-6 py-3">Work Description</TableHead>
-              <TableHead className="px-6 py-3">Reason for WFH</TableHead>
-              <TableHead className="px-6 py-3 flex justify-center">
-                Proof Image
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {attendanceData?.data?.attendances.map((attendance) => (
-              <TableRow key={attendance.id}>
-                <TableCell className="px-6 py-3">
-                  {new Date(attendance.timestamp).toDateString()}
-                </TableCell>
-                <TableCell className="px-6 py-3">
-                  {formatTimestamp(attendance.timestamp)}
-                </TableCell>
-                <TableCell className="px-6 py-3 whitespace-normal">
-                  {attendance.work_description}
-                </TableCell>
-                <TableCell className="px-6 py-3 whitespace-normal">
-                  {attendance.reason_for_wfh}
-                </TableCell>
-                <TableCell className="px-6 py-3 flex justify-center">
-                  <p className="cursor-pointer text-blue-600">🖼 Open</p>
-                </TableCell>
-              </TableRow>
-            ))}
-            🖼
-          </TableBody>
-        </Table>
-      </div>
+      {attendanceData?.data?.attendances &&
+      attendanceData?.data?.attendances.length > 0 ? (
+        renderAttendanceHistory(attendanceData, page, setPage)
+      ) : (
+        <div className="border rounded-lg shadow px-4 sm:px-6 py-5 mb-6">
+          <h2 className="text-lg mb-4">No attendance data found</h2>
+        </div>
+      )}
     </main>
   );
 };
@@ -163,9 +140,99 @@ const renderEmployeeData = (
           </dl>
         </div>
       </div>
-      <div className="col-span-4 border rounded-lg shadow">
-        <img src={profilePlaceholder} className="" />
+      <div className="col-span-4 flex justify-center items-center border rounded-lg shadow">
+        <img
+          src={profilePlaceholder}
+          className="size-92 object-cover rounded-full"
+        />
       </div>
     </div>
   );
 };
+function renderAttendanceHistory(
+  attendanceData: {
+    data: GetAttendancesResponseData;
+  },
+  page: number,
+  setPage: (page: number) => void
+) {
+  return (
+    <div className="border rounded-lg shadow px-4 sm:px-6 py-5 mb-6">
+      <h2 className="text-lg mb-4">Employee's WFH Attendance History</h2>
+      <Table>
+        <TableHeader className="bg-gray-100">
+          <TableRow>
+            <TableHead className="px-6 py-3">Date</TableHead>
+            <TableHead className="px-6 py-3">Timestamp</TableHead>
+            <TableHead className="px-6 py-3">Work Description</TableHead>
+            <TableHead className="px-6 py-3">Reason for WFH</TableHead>
+            <TableHead className="px-6 py-3 flex justify-center">
+              Proof Image
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {attendanceData?.data?.attendances.map((attendance) => (
+            <TableRow key={attendance.id}>
+              <TableCell className="px-6 py-3">
+                {new Date(attendance.timestamp).toDateString()}
+              </TableCell>
+              <TableCell className="px-6 py-3">
+                {formatTimestamp(attendance.timestamp)}
+              </TableCell>
+              <TableCell className="px-6 py-3 whitespace-normal">
+                {attendance.work_description}
+              </TableCell>
+              <TableCell className="px-6 py-3 whitespace-normal">
+                {attendance.reason_for_wfh}
+              </TableCell>
+              <TableCell className="px-6 py-3">
+                <p className="text-center cursor-pointer text-blue-600">
+                  🖼 Open
+                </p>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <div className="grid grid-cols-12 mt-4">
+        <p className="text-sm text-gray-500 col-span-4">
+          Showing Page {page} of{" "}
+          {attendanceData.data.pagination_info.total_pages}
+        </p>
+        <Pagination className="col-span-8 flex justify-end">
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                className={`${
+                  page < 2 ? "opacity-30 pointer-events-none" : "cursor-pointer"
+                }`}
+                aria-disabled={page < 2}
+                tabIndex={page < 2 ? -1 : undefined}
+                onClick={() => setPage(page - 1)}
+              />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationNext
+                className={`${
+                  page >= attendanceData.data.pagination_info.total_pages
+                    ? "opacity-30 pointer-events-none"
+                    : "cursor-pointer"
+                }`}
+                aria-disabled={
+                  page >= attendanceData.data.pagination_info.total_pages
+                }
+                tabIndex={
+                  page >= attendanceData.data.pagination_info.total_pages
+                    ? -1
+                    : undefined
+                }
+                onClick={() => setPage(page + 1)}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>
+    </div>
+  );
+}
