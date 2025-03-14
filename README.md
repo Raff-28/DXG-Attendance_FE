@@ -4,6 +4,9 @@ This project is a web front-end for a WFH attendance application in the hypoteth
 
 The app also provides an admin panel for HRD admins to view employee's data, update or delete them, as well as checking their WFH attendance history (view-only). An admin can also register a new employee into the system.
 
+The deployed version of the app can found in the following url:
+https://dxg-attendance-fe.vercel.app
+
 ## How to run locally
 
 First, you need to setup the backend & database by following the instructions in this back-end repository https://github.com/Raff-28/DXG-Attendance_BE
