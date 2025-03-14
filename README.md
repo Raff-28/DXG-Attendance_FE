@@ -1,54 +1,43 @@
-# React + TypeScript + Vite
+# DXG Attendance App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a web front-end for a WFH attendance application in the hypotethical company "DXG" built using ReactJs + Vite. Employees are able to record their attendance by providing a proof image when doing their work at home in one specific day.
 
-Currently, two official plugins are available:
+The app also provides an admin panel for HRD admins to view employee's data, update or delete them, as well as checking their WFH attendance history (view-only). An admin can also register a new employee into the system.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## How to run locally
 
-## Expanding the ESLint configuration
+First, you need to setup the backend & database by following the instructions in this back-end repository LINK HERE
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Then, create a .env configuration file by following the format in .env.example file (you can also modify them depending on which ports you ran the services at).
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```
+VITE_AUTH_BASE_URL=http://localhost:4001
+VITE_EMPLOYEE_BASE_URL=http://localhost:4002
+VITE_ATTENDANCE_BASE_URL=http://localhost:4003
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+After that, install dependencies.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```
+npm install
+```
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+Finally, build and run the app
+
+```
+npm run build
+npm run preview
+```
+
+Or run it in development server
+
+```
+npm run dev
+```
+
+Note: If you followed the backend setup properly, there will already be an admin account registered with the credentials below. You can use it to create the employee users and experiment however you like.
+
+```
+Email: admin@mail.com
+Pass : Admin_123
 ```
