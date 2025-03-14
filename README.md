@@ -6,7 +6,7 @@ The app also provides an admin panel for HRD admins to view employee's data, upd
 
 ## How to run locally
 
-First, you need to setup the backend & database by following the instructions in this back-end repository LINK HERE
+First, you need to setup the backend & database by following the instructions in this back-end repository https://github.com/Raff-28/DXG-Attendance_BE
 
 Then, create a .env configuration file by following the format in .env.example file (you can also modify them depending on which ports you ran the services at).
 
