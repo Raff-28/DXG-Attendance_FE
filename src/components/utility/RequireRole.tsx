@@ -27,8 +27,6 @@ export const RequireRole = (props: RequireRoleProps) => {
 
   if (isFetching || !data?.data) {
     return <div>Loading...</div>;
-  } else {
-    console.log(data.data); // TODO: Remove this line later
   }
 
   if (!props.role.includes(data.data.role)) {
