@@ -199,7 +199,7 @@ export const SubmitAttendanceForm = () => {
             />
           </div>
           <AppButton
-            className="w-full cursor-pointer"
+            className="min-w-24 w-1/3 ms-auto cursor-pointer"
             type="submit"
             state={
               isPending
