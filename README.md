@@ -7,6 +7,13 @@ The app also provides an admin panel for HRD admins to view employee's data, upd
 The deployed version of the app can found in the following url:
 https://dxg-attendance-fe.vercel.app
 
+The admin account is pre-seeded. You can use these credentials to login as admin, create the employee accounts and explore the app however you like.
+
+```
+Email: admin@mail.com
+Pass : Admin_123
+```
+
 ## How to run locally
 
 First, you need to setup the backend & database by following the instructions in this back-end repository https://github.com/Raff-28/DXG-Attendance_BE
@@ -36,11 +43,4 @@ Or run it in development server
 
 ```
 npm run dev
-```
-
-Note: If you followed the backend setup properly, there will already be an admin account registered with the credentials below. You can use it to create the employee users and experiment however you like.
-
-```
-Email: admin@mail.com
-Pass : Admin_123
 ```
