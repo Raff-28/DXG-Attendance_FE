@@ -15,7 +15,7 @@ export type GetAttendancesResponseData = {
 export type GetAttendanceResponseData = {
   id: number;
   employee_id: number;
-  photo_url: Date;
+  photo_url: string;
   timestamp: string;
   work_description: string;
   reason_for_wfh: string;

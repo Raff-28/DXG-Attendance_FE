@@ -1,4 +1,5 @@
 import profilePlaceholder from "@/assets/profile-placeholder.png";
+import { FullScreenImageDialog } from "@/components/dialog/FullScreenImage.Dialog";
 import {
   Pagination,
   PaginationContent,
@@ -14,7 +15,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ACCESS_TOKEN_KEY, DEFAULT_PAGE_SIZE } from "@/constants/globals";
+import {
+  ACCESS_TOKEN_KEY,
+  DEFAULT_PAGE_SIZE,
+  ROUTES,
+} from "@/constants/globals";
 import {
   getAttendances,
   GetAttendancesResponseData,
@@ -27,8 +32,9 @@ import { formatTimestamp } from "@/lib/utils";
 import { AppResponse } from "@/types/global";
 import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
+import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 export const EmployeeDetailPage = () => {
   const { id, userId } = useParams();
@@ -74,6 +80,14 @@ export const EmployeeDetailPage = () => {
 
   return (
     <main className="mt-4 flex flex-col gap-5 px-5">
+      <Link
+        to={ROUTES.EMPLOYEE_LIST}
+        replace
+        className="flex items-center gap-2 text-blue-600 underline"
+      >
+        <ArrowLeft />
+        <span>Back to Employee List</span>
+      </Link>
       {renderEmployeeData(employeeData)}
       {attendanceData?.data?.attendances &&
       attendanceData?.data?.attendances.length > 0 ? (
@@ -149,13 +163,13 @@ const renderEmployeeData = (
     </div>
   );
 };
-function renderAttendanceHistory(
+const renderAttendanceHistory = (
   attendanceData: {
     data: GetAttendancesResponseData;
   },
   page: number,
   setPage: (page: number) => void
-) {
+) => {
   return (
     <div className="border rounded-lg shadow px-4 sm:px-6 py-5 mb-6">
       <h2 className="text-lg mb-4">Employee's WFH Attendance History</h2>
@@ -186,11 +200,7 @@ function renderAttendanceHistory(
               <TableCell className="px-6 py-3 whitespace-normal">
                 {attendance.reason_for_wfh}
               </TableCell>
-              <TableCell className="px-6 py-3">
-                <p className="text-center cursor-pointer text-blue-600">
-                  🖼 Open
-                </p>
-              </TableCell>
+              <AttendanceProofCell imageUrl={attendance.photo_url} />
             </TableRow>
           ))}
         </TableBody>
@@ -235,4 +245,27 @@ function renderAttendanceHistory(
       </div>
     </div>
   );
-}
+};
+
+const AttendanceProofCell = ({ imageUrl }: { imageUrl: string }) => {
+  const [isFullScreenImageOpen, setIsFullScreenImageOpen] = useState(false);
+  return (
+    <TableCell className="px-6 py-3">
+      <>
+        {isFullScreenImageOpen && (
+          <FullScreenImageDialog
+            open={isFullScreenImageOpen}
+            onOpenChange={setIsFullScreenImageOpen}
+            imageUrl={imageUrl}
+          />
+        )}
+        <p
+          className="text-center cursor-pointer text-blue-600"
+          onClick={() => setIsFullScreenImageOpen(true)}
+        >
+          🖼 Open
+        </p>
+      </>
+    </TableCell>
+  );
+};
