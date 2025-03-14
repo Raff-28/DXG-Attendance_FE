@@ -8,7 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { WithTooltip } from "@/components/utility/WithTooltip";
-import { ACCESS_TOKEN_KEY } from "@/constants/globals";
+import { ACCESS_TOKEN_KEY, ROUTES } from "@/constants/globals";
 import {
   deleteEmployee,
   GetEmployeeResponseData,
@@ -19,6 +19,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { Info, Trash2, UserRoundPen } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { EditEmployeeDialog } from "./components/EditEmployee.Dialog";
 
 export const EmployeeListPage = () => {
@@ -74,9 +75,13 @@ export const EmployeeListPage = () => {
                 <TableCell className="px-6 py-3 flex justify-center">
                   <div className="flex gap-2">
                     <WithTooltip content="View details">
-                      <div className="cursor-pointer text-blue-800 border-2 p-1 rounded-md border-blue-800 hover:bg-blue-800 hover:text-white transform hover:scale-110 transition-transform duration-200">
-                        <Info size={20} />
-                      </div>
+                      <Link
+                        to={`${ROUTES.EMPLOYEE_DETAIL}/${employee.id}/${employee.user_id}`}
+                      >
+                        <div className="cursor-pointer text-blue-800 border-2 p-1 rounded-md border-blue-800 hover:bg-blue-800 hover:text-white transform hover:scale-110 transition-transform duration-200">
+                          <Info size={20} />
+                        </div>
+                      </Link>
                     </WithTooltip>
                     <EditEmployeeButton prevData={employee} />
                     <DeleteEmployeeButton id={employee.id} />

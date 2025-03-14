@@ -34,6 +34,28 @@ export const getEmployees = async (
   }
 };
 
+export const getEmployeeDetails = async (
+  id: number,
+  token: string
+): Promise<AppResponse<GetEmployeeResponseData>> => {
+  try {
+    const response = await axios.get<AppResponse<GetEmployeeResponseData>>(
+      `${config.EMPLOYEE_BASE_URL}/employees/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (e) {
+    if (axios.isAxiosError<AppResponse<void>>(e) && e.response) {
+      return { message: e.response.data.message! };
+    }
+    return { message: "An error occurred" };
+  }
+};
+
 export const deleteEmployee = async (
   id: number,
   token: string
