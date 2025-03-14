@@ -37,7 +37,7 @@ import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 export const EmployeeDetailPage = () => {
-  const { id, userId } = useParams();
+  const { id } = useParams();
   const [page, setPage] = useState(1);
   const { data: employeeData } = useQuery({
     queryKey: ["employeeDetail", id],
@@ -58,7 +58,7 @@ export const EmployeeDetailPage = () => {
   });
 
   const { data: attendanceData } = useQuery({
-    queryKey: ["attendanceList", userId, page],
+    queryKey: ["attendanceList", employeeData?.data?.user_id, page],
     queryFn: async () => {
       const token = Cookies.get(ACCESS_TOKEN_KEY);
       if (!token) {
@@ -66,16 +66,17 @@ export const EmployeeDetailPage = () => {
           message: "No token found",
         });
       }
-      if (userId === undefined || isNaN(Number(userId))) {
+      if (employeeData?.data?.user_id === undefined) {
         return Promise.resolve<AppResponse<GetAttendancesResponseData>>({
-          message: "Invalid id",
+          message: "Invalid user id",
         });
       }
-      return getAttendances(Number(userId), token, {
+      return getAttendances(employeeData?.data?.user_id, token, {
         page_number: page,
         page_size: DEFAULT_PAGE_SIZE,
       });
     },
+    enabled: employeeData?.data?.user_id !== undefined,
   });
 
   return (

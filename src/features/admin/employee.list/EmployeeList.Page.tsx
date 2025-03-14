@@ -75,9 +75,7 @@ export const EmployeeListPage = () => {
                 <TableCell className="px-6 py-3 flex justify-center">
                   <div className="flex gap-2">
                     <WithTooltip content="View details">
-                      <Link
-                        to={`${ROUTES.EMPLOYEE_DETAIL}/${employee.id}/${employee.user_id}`}
-                      >
+                      <Link to={`${ROUTES.EMPLOYEE_DETAIL}/${employee.id}`}>
                         <div className="cursor-pointer text-blue-800 border-2 p-1 rounded-md border-blue-800 hover:bg-blue-800 hover:text-white transform hover:scale-110 transition-transform duration-200">
                           <Info size={20} />
                         </div>
