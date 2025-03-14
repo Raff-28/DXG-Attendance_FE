@@ -22,6 +22,7 @@ import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { SubmitAttendanceSuccessDialog } from "./components/SubmitAttendanceSuccess.Dialog";
 import { submitAttendanceSchema } from "./submitAttendance.schema";
 
 export const SubmitAttendanceForm = () => {
@@ -32,7 +33,8 @@ export const SubmitAttendanceForm = () => {
     };
   }, []);
   const [proofImg, setProofImg] = useState<File | undefined>(undefined);
-  const { mutateAsync, isPending } = useMutation({
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const { mutateAsync, isPending, data } = useMutation({
     mutationFn: (
       body: PostAttendanceRequestBody
     ): Promise<AppResponse<PostAttendanceResponseData>> => {
@@ -50,10 +52,9 @@ export const SubmitAttendanceForm = () => {
       return postAttendance(body, proofImg, token);
     },
     onSuccess: (data) => {
-      if (!data.message) {
-        toast("Attendance submitted successfully");
-        form.reset(defaultValues);
-        setProofImg(undefined);
+      if (!data.message && data.data) {
+        console.log(data.data);
+        setIsSuccessModalOpen(true);
       } else {
         toast(data.message);
       }
@@ -102,6 +103,17 @@ export const SubmitAttendanceForm = () => {
 
   return (
     <>
+      {isSuccessModalOpen && data?.data && (
+        <SubmitAttendanceSuccessDialog
+          data={data.data}
+          open={isSuccessModalOpen}
+          onOpenChange={setIsSuccessModalOpen}
+          onExit={() => {
+            form.reset(defaultValues);
+            setProofImg(undefined);
+          }}
+        />
+      )}
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

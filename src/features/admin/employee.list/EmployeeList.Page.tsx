@@ -20,6 +20,7 @@ import Cookies from "js-cookie";
 import { Info, Trash2, UserRoundPen } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 import { EditEmployeeDialog } from "./components/EditEmployee.Dialog";
 
 export const EmployeeListPage = () => {
@@ -117,6 +118,7 @@ const DeleteEmployeeButton = ({ id }: { id: number }) => {
     onSuccess: (data) => {
       if (!data.message) {
         setIsDeleteModalOpen(false);
+        toast("Employee deleted successfully!");
         queryClient.invalidateQueries({ queryKey: ["employeeList"] });
       }
     },

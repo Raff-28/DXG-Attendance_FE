@@ -6,7 +6,6 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-import { PageTitle } from "@/components/utility/PageTitle";
 import { ROUTES } from "@/constants/globals";
 import { EmployeeDetailRoute } from "@/features/admin/employee.detail/EmployeeDetail.Route";
 import { EmployeeRegistrationRoute } from "@/features/admin/employee.registration/EmployeeRegistration.Route";
@@ -21,14 +20,7 @@ const EmployeeLayout = lazy(
 const router = createBrowserRouter([
   {
     path: ROUTES.HOME,
-    element: (
-      <>
-        <PageTitle title="Home" />
-        <div>
-          <p>Home Page</p>
-        </div>
-      </>
-    ),
+    element: <Navigate to={ROUTES.LOGIN} replace />,
   },
   {
     element: <AdminLayout />,

@@ -19,6 +19,7 @@ import { useMutation } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import z from "zod";
 import { employeeRegistrationSchema } from "./employeeRegistration.schema";
 
@@ -37,6 +38,7 @@ export const EmployeeRegistrationForm = () => {
     onSuccess: (data) => {
       if (data.data) {
         navigate(ROUTES.EMPLOYEE_LIST);
+        toast("Employee registered successfully!");
       }
     },
   });

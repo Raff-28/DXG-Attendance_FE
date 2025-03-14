@@ -18,6 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { useForm, UseFormReturn } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import { editEmployeeSchema } from "../schemas/editEmployee.schema";
 
@@ -44,6 +45,7 @@ export const EditEmployeeForm = ({
     onSuccess: (data) => {
       if (!data.message) {
         onSuccessEdit();
+        toast("Employee updated successfully!");
         queryClient.invalidateQueries({ queryKey: ["employeeList"] });
       }
     },

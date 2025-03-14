@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 import { ArrowLeftFromLine, LogOut } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { LogOutDialog } from "../dialog/Logout.Dialog";
 
@@ -18,6 +18,12 @@ export const Sidebar = ({ children, menus }: SidebarProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (window.innerWidth >= 1280) {
+      setIsOpen(true);
+    }
+  }, []);
 
   return (
     <>
